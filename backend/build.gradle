@@ -58,6 +58,10 @@ jib{
         auth {
             username = findProperty('jib.to.auth.username') ?: " "
             password = findProperty('jib.to.auth.password') ?: " "
+
+            if (username == " " || password == " ") {
+                logger.warn("gradle.properties 파일이 있는지 확인")
+            }
         }
     }
     container {
