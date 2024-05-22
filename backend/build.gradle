@@ -41,6 +41,12 @@ tasks.named('test') {
 jib{
     from {
         image = 'amazoncorretto:17'
+        platforms {
+            platform {
+                architecture = 'arm64'
+                os = 'linux'
+            }
+        }
     }
     to {
         image = 'docker.io/ghkd110/jib_test'
