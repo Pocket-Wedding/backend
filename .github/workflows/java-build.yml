@@ -38,6 +38,28 @@ jobs:
         with:
           build-root-directory: ./backend
 
+      - name: Make Config File
+        run: |
+          cd backend/src/main/resources 
+          cat <<EOF > application.properties
+          spring.application.name=backend
+          # Server
+          server.port=8080
+          
+          # Database - Postgres (using secrets)
+          spring.datasource.url=${{ secrets.SPRING_DATASOURCE_URL }}
+          spring.datasource.username=${{ secrets.SPRING_DATASOURCE_USERNAME }}
+          spring.datasource.password=${{ secrets.SPRING_DATASOURCE_PASSWORD }}
+          spring.datasource.driver-class-name=org.postgresql.Driver
+          spring.jpa.hibernate.ddl-auto=update
+          spring.jpa.show-sql=true
+          spring.jpa.properties.hibernate.dialect=org.hibernate.dialect.PostgreSQLDialect
+          
+          # Logging
+          logging.level.org.springframework.web=DEBUG
+          logging.level.org.hibernate=ERROR
+          EOF
+          chmod 600 application.properties
 
       - name: Cache Gradle packages
         uses: actions/cache@v3
