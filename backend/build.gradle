@@ -42,6 +42,7 @@ jib{
     from {
         image = 'amazoncorretto:17'
         platforms {
+//            amd64계열 리눅스 / 추후 OCI index 지원 시, 아래 주석 해제
 //            platform {
 //                architecture = 'amd64'
 //                os = 'linux'
