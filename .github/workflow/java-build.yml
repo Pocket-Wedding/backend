@@ -5,6 +5,8 @@ on:
 # For Test
 #  push:
 #    branches: [ "develop" ]
+  push:
+    branches: [ "feat/*"]
   pull_request:
     branches: [ "develop" ]
 
