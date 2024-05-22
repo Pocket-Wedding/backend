@@ -51,7 +51,7 @@ jobs:
 
 
       - name: Build with Gradle Wrapper
-        run: pwd && ls -al && ./backend/gradlew build
+        run: cd backend && ./gradlew build
 
   dependency-submission:
     runs-on: ubuntu-latest
