@@ -1,13 +1,11 @@
 name: Java Build with Gradle
-
 ## develop branch에 push되거나, PR 될 때, 실행
 on:
-# For Test
+  # For Test
   push:
-    branches: [ "develop" ]
+    branches: [ "develop","feat/#7/GithubActionCI" ]
   pull_request:
     branches: [ "develop" ]
-
 jobs:
   build:
     runs-on: ubuntu-latest
@@ -15,10 +13,8 @@ jobs:
       matrix:
         java-version: [ '17' ]
         distribution: [ 'corretto', 'temurin' ]
-
     permissions:
       contents: read
-
     steps:
       - uses: actions/checkout@v4
       - name: Set up JDK 17
@@ -26,15 +22,37 @@ jobs:
         with:
           java-version: ${{ matrix.java-version }}
           distribution: ${{ matrix.distribution }}
-
+      - name: checking directories
+        run: ls -al
       - name: Grant execute permission for gradlew
         run: chmod +x ./backend/gradlew
-
       - name: Setup Gradle
-        uses: gradle/actions/setup-gradle@417ae3ccd767c252f5661f1ace9f835f9654f2b5 # v3.1.0
+        uses: gradle/actions/setup-gradle@v3.1.0 # v3.1.0
         with:
-          arguments: clean bootJar --no-daemon
+          build-root-directory: ./backend
 
+      - name: Make Config File
+        run: |
+          cd backend/src/main/resources 
+          cat <<EOF > application.properties
+          spring.application.name=backend
+          # Server
+          server.port=8080
+          
+          # Database - Postgres (using secrets)
+          spring.datasource.url=${{ secrets.SPRING_DATASOURCE_URL }}
+          spring.datasource.username=${{ secrets.SPRING_DATASOURCE_USERNAME }}
+          spring.datasource.password=${{ secrets.SPRING_DATASOURCE_PASSWORD }}
+          spring.datasource.driver-class-name=org.postgresql.Driver
+          spring.jpa.hibernate.ddl-auto=update
+          spring.jpa.show-sql=true
+          spring.jpa.properties.hibernate.dialect=org.hibernate.dialect.PostgreSQLDialect
+          
+          # Logging
+          logging.level.org.springframework.web=DEBUG
+          logging.level.org.hibernate=ERROR
+          EOF
+          chmod 600 application.properties
       - name: Cache Gradle packages
         uses: actions/cache@v3
         with:
@@ -44,16 +62,16 @@ jobs:
           key: ${{ runner.os }}-gradle-${{ hashFiles('**/*.gradle*', '**/gradle-wrapper.properties') }}
           restore-keys: |
             ${{ runner.os }}-gradle-
-
-
       - name: Build with Gradle Wrapper
-        run: ./gradlew build
-
+        run: cd backend && ./gradlew build
   dependency-submission:
     runs-on: ubuntu-latest
+    strategy:
+      matrix:
+        java-version: [ '17' ]
+        distribution: [ 'corretto', 'temurin' ]
     permissions:
       contents: write
-
     steps:
       - uses: actions/checkout@v4
       - name: Set up JDK 17
@@ -61,9 +79,9 @@ jobs:
         with:
           java-version: ${{ matrix.java-version }}
           distribution: ${{ matrix.distribution }}
-
       # Generates and submits a dependency graph, enabling Dependabot Alerts for all project dependencies.
       # See: https://github.com/gradle/actions/blob/main/dependency-submission/README.md
       - name: Generate and submit dependency graph
-        uses: gradle/actions/dependency-submission@417ae3ccd767c252f5661f1ace9f835f9654f2b5 # v3.1.0
-
+        uses: gradle/actions/dependency-submission@v3.1.0 # v3.1.0
+        with:
+          build-root-directory: ./backend
