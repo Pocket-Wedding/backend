@@ -27,6 +27,9 @@ jobs:
           java-version: ${{ matrix.java-version }}
           distribution: ${{ matrix.distribution }}
 
+      - name: checking directories
+        run: ls -al
+
       - name: Grant execute permission for gradlew
         run: chmod +x ./backend/gradlew
 
@@ -41,15 +44,15 @@ jobs:
         uses: actions/cache@v3
         with:
           path: |
-            ~/backend/.gradle/caches
-            ~/backend/.gradle/wrapper
+            ~/.gradle/caches
+            ~/.gradle/wrapper
           key: ${{ runner.os }}-gradle-${{ hashFiles('**/*.gradle*', '**/gradle-wrapper.properties') }}
           restore-keys: |
             ${{ runner.os }}-gradle-
 
 
       - name: Build with Gradle Wrapper
-        run: ./backend/gradlew build
+        run: ls -al && ./backend/gradlew build
 
   dependency-submission:
     runs-on: ubuntu-latest
