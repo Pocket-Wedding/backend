@@ -37,7 +37,7 @@ jobs:
         uses: gradle/actions/setup-gradle@v3.1.0 # v3.1.0
         with:
           gradle-version: 8.7
-          build-root-directory: backend
+          build-root-directory: ./backend
           arguments: clean bootJar --no-daemon
 
       - name: Cache Gradle packages
