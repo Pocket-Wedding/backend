@@ -42,10 +42,10 @@ jib{
     from {
         image = 'amazoncorretto:17'
         platforms {
-            platform {
-                architecture = 'amd64'
-                os = 'linux'
-            }
+//            platform {
+//                architecture = 'amd64'
+//                os = 'linux'
+//            }
             platform {
                 architecture = 'arm64'
                 os = 'linux'
@@ -53,11 +53,11 @@ jib{
         }
     }
     to {
-        image = 'docker.io/ghkd110/jib_test'
-        tags = ['0.8']
+        image = 'docker.io/ghkd110/pocket-wedding-backend'
+        tags = ['1.0']
         auth {
-            username = project.findProperty('jib.to.auth.username')
-            password = project.findProperty('jib.to.auth.password')
+            username = findProperty('jib.to.auth.username') ?: " "
+            password = findProperty('jib.to.auth.password') ?: " "
         }
     }
     container {
