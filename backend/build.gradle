@@ -37,3 +37,39 @@ dependencies {
 tasks.named('test') {
     useJUnitPlatform()
 }
+
+jib{
+    from {
+        image = 'amazoncorretto:17'
+    }
+    to {
+        image = 'docker.io/ghkd110/jib_test'
+        tags = ['0.8']
+        auth {
+            username = project.findProperty('jib.to.auth.username') ?: 'ghkd110'
+            password = project.findProperty('jib.to.auth.password') ?: '5499458k@'
+        }
+    }
+    container {
+        jvmFlags = ['-Xms512m', '-Xdebug']
+        ports = ['8080']
+        environment = [
+                'SPRING_PROFILES_ACTIVE': 'prod',
+                'NORMAL_PROP': 'NORMAL',
+                'DIRECT_MSG': 'Hello!',
+                'USE_PROFILE': 'default'
+        ]
+        mainClass = 'pocket.backend.BackendApplication'
+        format='OCI'
+        creationTime='USE_CURRENT_TIMESTAMP'
+        entrypoint=[
+                'java',
+                '-Dspring.profiles.active=${USE_PROFILE}',
+                '-Dnormal.prop=${NORM_PROP}',
+                '-Dconfig.healthmsg=${DIRECT_MSG}',
+                '-cp',
+                '/app/resources:/app/classes:/app/libs/*',
+                'pocket.backend.BackendApplication'
+        ]
+    }
+}
