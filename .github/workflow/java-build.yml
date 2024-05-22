@@ -3,10 +3,8 @@ name: Java Build with Gradle
 ## develop branch에 push되거나, PR 될 때, 실행
 on:
 # For Test
-#  push:
-#    branches: [ "develop" ]
   push:
-    branches: [ "feat/*"]
+    branches: [ "develop" ]
   pull_request:
     branches: [ "develop" ]
 
