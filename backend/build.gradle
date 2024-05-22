@@ -42,7 +42,7 @@ jib{
     from {
         image = 'amazoncorretto:17'
         platforms {
-            from {
+            platform {
                 architecture = 'amd64'
                 os = 'linux'
             }
@@ -56,8 +56,8 @@ jib{
         image = 'docker.io/ghkd110/jib_test'
         tags = ['0.8']
         auth {
-            username = project.findProperty('jib.to.auth.username') ?: 'ghkd110'
-            password = project.findProperty('jib.to.auth.password') ?: '5499458k@'
+            username = project.findProperty('jib.to.auth.username')
+            password = project.findProperty('jib.to.auth.password')
         }
     }
     container {
