@@ -39,3 +39,4 @@ out/
 ### Spring Boot ###
 application.properties
 application.yml
+gradle.properties

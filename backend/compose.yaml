@@ -14,3 +14,13 @@ services:
     restart: 'on-failure'
     networks:
       - 'pocket'
+  backend:
+    image: 'ghkd110/jib_test:0.8'
+    container_name: 'backend'
+    environment:
+      USE_PROFILE: prod
+      NORM_PROP: docker1
+      DIRECT_MSG: hello
+    ports:
+      - '8080:8080'
+    restart: 'always'

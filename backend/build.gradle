@@ -2,10 +2,11 @@ plugins {
     id 'java'
     id 'org.springframework.boot' version '3.2.5'
     id 'io.spring.dependency-management' version '1.1.4'
+    id 'com.google.cloud.tools.jib' version '3.4.2'
 }
 
 group = 'pocket'
-version = '0.0.1-SNAPSHOT'
+version = 'latest'
 
 java {
     sourceCompatibility = '17'
@@ -26,7 +27,6 @@ dependencies {
     implementation 'org.springframework.boot:spring-boot-starter-web'
     compileOnly 'org.projectlombok:lombok'
     developmentOnly 'org.springframework.boot:spring-boot-devtools'
-    developmentOnly 'org.springframework.boot:spring-boot-docker-compose'
     runtimeOnly 'org.postgresql:postgresql'
     annotationProcessor 'org.springframework.boot:spring-boot-configuration-processor'
     annotationProcessor 'org.projectlombok:lombok'
@@ -36,4 +36,55 @@ dependencies {
 
 tasks.named('test') {
     useJUnitPlatform()
+}
+
+jib{
+    from {
+        image = 'amazoncorretto:17'
+        platforms {
+//            amd64계열 리눅스 / 추후 OCI index 지원 시, 아래 주석 해제
+//            platform {
+//                architecture = 'amd64'
+//                os = 'linux'
+//            }
+            platform {
+                architecture = 'arm64'
+                os = 'linux'
+            }
+        }
+    }
+    to {
+        image = 'docker.io/ghkd110/pocket-wedding-backend'
+        tags = ['1.0']
+        auth {
+            username = findProperty('jib.to.auth.username') ?: " "
+            password = findProperty('jib.to.auth.password') ?: " "
+
+            if (username == " " || password == " ") {
+                logger.warn("gradle.properties 파일이 있는지 확인")
+            }
+        }
+    }
+    container {
+        jvmFlags = ['-Xms512m', '-Xdebug']
+        ports = ['8080']
+        environment = [
+                'SPRING_PROFILES_ACTIVE': 'prod',
+                'NORMAL_PROP': 'NORMAL',
+                'DIRECT_MSG': 'Hello!',
+                'USE_PROFILE': 'default'
+        ]
+        mainClass = 'pocket.backend.BackendApplication'
+        format='OCI'
+        creationTime='USE_CURRENT_TIMESTAMP'
+        entrypoint=[
+                'java',
+                '-Dspring.profiles.active=${USE_PROFILE}',
+                '-Dnormal.prop=${NORM_PROP}',
+                '-Dconfig.healthmsg=${DIRECT_MSG}',
+                '-cp',
+                '/app/resources:/app/classes:/app/libs/*',
+                'pocket.backend.BackendApplication'
+        ]
+    }
 }
