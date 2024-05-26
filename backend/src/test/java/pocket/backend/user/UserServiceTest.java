@@ -94,6 +94,6 @@ public class UserServiceTest {
     @Test
     void deleteCurrentUser() {
         userService.deleteCurrentUser(user);
-        verify(userRepository).deletedById(anyLong());
+        verify(userRepository).deleteById(anyLong());
     }
 }

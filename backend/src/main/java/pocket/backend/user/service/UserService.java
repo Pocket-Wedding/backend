@@ -37,7 +37,7 @@ public class UserService {
 
     @Transactional
     public void deleteCurrentUser(User user) {
-        userRepository.deletedById(user.getId());
+        userRepository.deleteById(user.getId());
     }
 
     @Transactional
