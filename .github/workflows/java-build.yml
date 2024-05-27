@@ -3,7 +3,7 @@ name: Java Build with Gradle
 on:
   # For Test
   push:
-    branches: [ "develop","feat/#7/GithubActionCI" ]
+    branches: [ "develop" ]
   pull_request:
     branches: [ "develop" ]
 jobs:
