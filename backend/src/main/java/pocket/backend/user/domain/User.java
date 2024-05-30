@@ -5,16 +5,14 @@ import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
-import org.hibernate.annotations.SQLDelete;
-import org.hibernate.annotations.Where;
 
-@NoArgsConstructor(access=lombok.AccessLevel.PUBLIC)
-@Entity
 @Getter
 @Setter
+@Entity
+@NoArgsConstructor(access=lombok.AccessLevel.PUBLIC)
 public class User {
     @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    @GeneratedValue(strategy = GenerationType.AUTO)
     private Long id;
 
     @Column(nullable = false)
@@ -61,7 +59,7 @@ public class User {
         this.role = role;
     }
 
-    public boolean isNotPossibleToAccessUserCocktail(Long userId) {
+    public boolean isNotPossibleToReservation(Long userId) {
         return !this.id.equals(userId) && this.role != Role.ROLE_ADMIN;
     }
 
