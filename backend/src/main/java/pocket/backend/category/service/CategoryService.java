@@ -17,7 +17,7 @@ import java.util.Optional;
 @RequiredArgsConstructor(access= AccessLevel.PUBLIC)
 @Service
 @Slf4j
-public class CategoryService {
+public class CategoryService{
 
     @Autowired
     private final CategoryRepository categoryRepository;
