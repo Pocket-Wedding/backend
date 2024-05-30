@@ -10,7 +10,7 @@ import pocket.backend.company.domain.CompanyRepository;
 import static org.junit.jupiter.api.Assertions.*;
 
 @ExtendWith(MockitoExtension.class)
-class CompanyServiceTest {
+class CompanyServiceTest{
     @Mock
     private CompanyRepository companyRepository;
 
