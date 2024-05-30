@@ -8,7 +8,7 @@ import pocket.backend.location.service.LocationService;
 import static org.junit.jupiter.api.Assertions.*;
 
 @ExtendWith(MockitoExtension.class)
-class LocationTest {
+class LocationTest{
 
     @Mock
     private LocationRepository locationRepository;
