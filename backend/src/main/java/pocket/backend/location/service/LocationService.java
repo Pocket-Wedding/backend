@@ -12,7 +12,7 @@ import pocket.backend.location.domain.LocationRepository;
 
 @RequiredArgsConstructor(access= AccessLevel.PUBLIC)
 @Service
-public class LocationService {
+public class LocationService{
     @Autowired
     private LocationRepository locationRepository;
 
