@@ -8,7 +8,6 @@ import pocket.backend.hall.domain.HallRepository;
 import pocket.backend.hall.dto.HallRequest;
 
 import java.util.List;
-import java.util.Optional;
 
 @Service
 @RequiredArgsConstructor
