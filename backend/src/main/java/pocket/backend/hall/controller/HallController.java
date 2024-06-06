@@ -16,31 +16,36 @@ public class HallController {
 
     private final HallService hallService;
 
-    @PostMapping
+    // WeddingHall 정보 생성
+    @PostMapping("/register")
     public ResponseEntity<Hall> createHall(@RequestBody HallRequest hallRequest) {
         Hall hall = hallService.createHall(hallRequest);
         return ResponseEntity.ok(hall);
     }
 
-    @GetMapping("/{id}")
+    // WeddingHall 특정 정보 조회
+    @GetMapping("/show/{id}")
     public ResponseEntity<Hall> getHall(@PathVariable Long id) {
         Hall hall = hallService.getHall(id);
         return ResponseEntity.ok(hall);
     }
 
-    @GetMapping
+    // WeddingHall 전체 정보 조회
+    @GetMapping("/show/{id}")
     public ResponseEntity<List<Hall>> getAllHalls() {
         List<Hall> halls = hallService.getAllHalls();
         return ResponseEntity.ok(halls);
     }
 
-    @PutMapping("/{id}")
+    // WeddingHall 정보 수정
+    @PutMapping("/update/{id}")
     public ResponseEntity<Hall> updateHall(@PathVariable Long id, @RequestBody HallRequest hallRequest) {
         Hall hall = hallService.updateHall(id, hallRequest);
         return ResponseEntity.ok(hall);
     }
 
-    @DeleteMapping("/{id}")
+    // WeddingHall 정보 삭제
+    @DeleteMapping("/delete/{id}")
     public ResponseEntity<Void> deleteHall(@PathVariable Long id) {
         hallService.deleteHall(id);
         return ResponseEntity.noContent().build();
