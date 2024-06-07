@@ -6,6 +6,7 @@ import pocket.backend.common.domain.BaseTimeEntity;
 import pocket.backend.company.domain.Company;
 
 import java.util.List;
+import java.util.Optional;
 
 @Entity
 @Getter
@@ -28,5 +29,9 @@ public class Category extends BaseTimeEntity {
     @Builder
     public Category(String name){
         this.name = name;
+    }
+
+    public void updateCategory(String name){
+        Optional.ofNullable(name).ifPresent(n -> this.name = n);
     }
 }
