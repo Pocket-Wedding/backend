@@ -32,15 +32,4 @@ public class CompanyRequest {
 
     @NotBlank
     private String locationName;
-
-    public Company toCompany(CompanyRequest companyRequest) {
-        return Company.builder()
-                .name(Optional.ofNullable(companyRequest.getName()).orElse(this.name))
-                .describe(Optional.ofNullable(companyRequest.getDescribe()).orElse(this.describe))
-                .address(Optional.ofNullable(companyRequest.getAddress()).orElse(this.address))
-                .phoneNumber(Optional.ofNullable(companyRequest.getPhoneNumber()).orElse(this.phoneNumber))
-                .price(Optional.ofNullable(companyRequest.getPrice()).orElse(this.price))
-                .imageUrl(Optional.ofNullable(companyRequest.getImageUrl()).orElse(this.imageUrl))
-                .build();
-    }
 }
