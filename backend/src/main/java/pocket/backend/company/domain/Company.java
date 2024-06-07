@@ -7,7 +7,10 @@ import lombok.NoArgsConstructor;
 import lombok.Setter;
 import pocket.backend.category.domain.Category;
 import pocket.backend.common.domain.BaseTimeEntity;
+import pocket.backend.company.dto.CompanyRequest;
 import pocket.backend.location.domain.Location;
+
+import java.util.Optional;
 
 @Entity
 @Getter
@@ -32,7 +35,7 @@ public class Company extends BaseTimeEntity {
     @Column(nullable = false)
     private String phoneNumber;
 
-    @Column
+    @Column(nullable = false)
     private Integer price;
 
     @Column
