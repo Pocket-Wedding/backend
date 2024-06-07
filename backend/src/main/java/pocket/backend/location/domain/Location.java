@@ -4,8 +4,10 @@ import jakarta.persistence.*;
 import lombok.*;
 import pocket.backend.common.domain.BaseTimeEntity;
 import pocket.backend.company.domain.Company;
+import pocket.backend.location.dto.LocationRequest;
 
 import java.util.List;
+import java.util.Optional;
 
 @Entity
 @Getter
@@ -23,10 +25,14 @@ public class Location extends BaseTimeEntity{
     private Long totalCount = 0L;
 
     @OneToMany(mappedBy="location")
-    private List<Company> companies;
+    public List<Company> companies;
 
     @Builder
     public Location(String name){
         this.name = name;
+    }
+
+    public void updateLocation(LocationRequest locationRequest){
+        Optional.ofNullable(locationRequest.getName()).ifPresent(name -> this.name = name);
     }
 }
