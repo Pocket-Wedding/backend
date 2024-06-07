@@ -1,4 +1,4 @@
-package pocket.backend.user;
+package pocket.backend.user.service;
 
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
@@ -7,15 +7,16 @@ import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.Mock;
 import org.mockito.junit.jupiter.MockitoExtension;
 import pocket.backend.common.exceptions.AuthException;
+import pocket.backend.common.exceptions.ErrorCode;
 import pocket.backend.user.domain.AuthProvider;
 import pocket.backend.user.domain.Role;
 import pocket.backend.user.domain.User;
 import pocket.backend.user.domain.UserRepository;
 import pocket.backend.user.dto.SignUpRequest;
-import pocket.backend.user.service.UserService;
 
+import static org.assertj.core.api.Assertions.assertThat;
+import static org.assertj.core.api.Assertions.assertThatThrownBy;
 import static org.mockito.Mockito.*;
-import static org.assertj.core.api.Assertions.*;
 
 @ExtendWith(MockitoExtension.class)
 public class UserServiceTest {
@@ -43,7 +44,7 @@ public class UserServiceTest {
                 .build();
 
     }
-
+    
     @DisplayName("회원가입을 한다.")
     @Test
     void registerUser() {
@@ -87,7 +88,7 @@ public class UserServiceTest {
 
         assertThatThrownBy(() -> userService.registerUser(signUpRequest))
                 .isInstanceOf(AuthException.class)
-                .hasMessageContaining("존재하는");
+                .hasMessageContaining(ErrorCode.DUPLICATED_EMAIL.getMessage());
     }
 
     @DisplayName("회원 탈퇴한다.")
