@@ -35,6 +35,9 @@ public class CategoryService{
         return findCategory.getId();
     }
 
+    public Optional<Category> getCategoryByName(String name) {
+        return categoryRepository.findByName(name);
+    }
     // 카테고리를 등록하는 메서드
     @Transactional
     public Optional<Category> registerCategory(CategoryRequest categoryRequest) {
