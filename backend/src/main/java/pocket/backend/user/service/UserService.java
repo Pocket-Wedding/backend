@@ -3,7 +3,6 @@ package pocket.backend.user.service;
 import jakarta.transaction.Transactional;
 import lombok.AccessLevel;
 import lombok.RequiredArgsConstructor;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import pocket.backend.common.exceptions.AuthException;
 import pocket.backend.common.exceptions.ErrorCode;
@@ -16,7 +15,7 @@ import pocket.backend.user.dto.UserUpdateRequest;
 @RequiredArgsConstructor(access= AccessLevel.PUBLIC)
 @Service
 public class UserService {
-    @Autowired
+
     private final UserRepository userRepository;
 
     public Long registerUser(SignUpRequest signUpRequest) {
