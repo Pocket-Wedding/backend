@@ -8,7 +8,7 @@ import org.mockito.Mock;
 import org.mockito.junit.jupiter.MockitoExtension;
 import pocket.backend.category.domain.Category;
 import pocket.backend.category.domain.CategoryRepository;
-import pocket.backend.category.dto.RegisterRequest;
+import pocket.backend.category.dto.CategoryRequest;
 import pocket.backend.common.exceptions.DuplicatedException;
 import pocket.backend.common.exceptions.ErrorCode;
 import pocket.backend.common.exceptions.NotFoundException;
@@ -40,27 +40,27 @@ public class CategoryServiceTest {
     @DisplayName("카테고리를 등록한다.")
     @Test
     void registerCategory() {
-        RegisterRequest registerRequest = new RegisterRequest("test");
+        CategoryRequest categoryRequest = new CategoryRequest("test");
 
         Category category = Category.builder()
                 .name("test")
                 .build();
 
-        when(categoryRepository.existsByName(registerRequest.getName())).thenReturn(false);
+        when(categoryRepository.existsByName(categoryRequest.getName())).thenReturn(false);
         when(categoryRepository.save(any())).thenReturn(category);
 
-        assertThat(categoryService.registerCategory(registerRequest)).isEqualTo(Optional.of(category));
+        assertThat(categoryService.registerCategory(categoryRequest)).isEqualTo(Optional.of(category));
 
     }
 
     @DisplayName("카테고리 중복 등록시 예외 발생")
     @Test
     void registerCategoryDuplicated() {
-        RegisterRequest registerRequest = new RegisterRequest("test");
+        CategoryRequest categoryRequest = new CategoryRequest("test");
 
         when(categoryRepository.existsByName("test")).thenReturn(true);
 
-        assertThatThrownBy(() -> categoryService.registerCategory(registerRequest))
+        assertThatThrownBy(() -> categoryService.registerCategory(categoryRequest))
                 .isInstanceOf(DuplicatedException.class)
                 .hasMessage(ErrorCode.DUPLICATED_CATEGORY_NAME.getMessage());
     }

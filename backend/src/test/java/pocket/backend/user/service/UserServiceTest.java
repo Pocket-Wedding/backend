@@ -14,8 +14,9 @@ import pocket.backend.user.domain.User;
 import pocket.backend.user.domain.UserRepository;
 import pocket.backend.user.dto.SignUpRequest;
 
+import static org.assertj.core.api.Assertions.assertThat;
+import static org.assertj.core.api.Assertions.assertThatThrownBy;
 import static org.mockito.Mockito.*;
-import static org.assertj.core.api.Assertions.*;
 
 @ExtendWith(MockitoExtension.class)
 public class UserServiceTest {
@@ -43,7 +44,7 @@ public class UserServiceTest {
                 .build();
 
     }
-
+    
     @DisplayName("회원가입을 한다.")
     @Test
     void registerUser() {
