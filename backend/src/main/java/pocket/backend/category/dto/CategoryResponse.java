@@ -3,8 +3,8 @@ package pocket.backend.category.dto;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 
-@AllArgsConstructor
 @Getter
-public class RegisterRequest {
+@AllArgsConstructor
+public class CategoryResponse {
     String name;
 }
