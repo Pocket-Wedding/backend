@@ -1,5 +1,6 @@
 package pocket.backend.hall.controller;
 
+import io.swagger.v3.oas.annotations.tags.Tag;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
@@ -9,9 +10,10 @@ import pocket.backend.hall.service.HallService;
 
 import java.util.List;
 
+@Tag(name = "Hall", description = "웨딩홀 정보 관리")
 @RestController
-@RequestMapping("/api/halls")
-@RequiredArgsConstructor
+@RequestMapping("/api/v1/halls")
+@RequiredArgsConstructor(access = lombok.AccessLevel.PUBLIC)
 public class HallController {
 
     private final HallService hallService;
@@ -31,7 +33,7 @@ public class HallController {
     }
 
     // WeddingHall 전체 정보 조회
-    @GetMapping("/show/{id}")
+    @GetMapping("/show")
     public ResponseEntity<List<Hall>> getAllHalls() {
         List<Hall> halls = hallService.getAllHalls();
         return ResponseEntity.ok(halls);
