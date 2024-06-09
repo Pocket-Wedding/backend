@@ -1,10 +1,13 @@
 package pocket.backend.location.domain;
 
 import jakarta.persistence.*;
-import lombok.*;
+import lombok.AccessLevel;
+import lombok.Builder;
+import lombok.Getter;
+import lombok.NoArgsConstructor;
 import pocket.backend.common.domain.BaseTimeEntity;
 import pocket.backend.company.domain.Company;
-import pocket.backend.location.dto.LocationRequest;
+import pocket.backend.location.dto.LocationUpdateRequest;
 
 import java.util.List;
 import java.util.Optional;
@@ -21,7 +24,6 @@ public class Location extends BaseTimeEntity{
     private String name;
 
     @Column(nullable = false)
-    @Setter
     private Long totalCount = 0L;
 
     @OneToMany(mappedBy="location")
@@ -32,7 +34,15 @@ public class Location extends BaseTimeEntity{
         this.name = name;
     }
 
-    public void updateLocation(LocationRequest locationRequest){
-        Optional.ofNullable(locationRequest.getName()).ifPresent(name -> this.name = name);
+    public void updateLocation(LocationUpdateRequest locationUpdateRequest){
+        Optional.ofNullable(locationUpdateRequest.getNewName()).ifPresent(name -> this.name = name);
+    }
+
+    public void increaseTotalCount(){
+        this.totalCount++;
+    }
+
+    public void decreaseTotalCount() {
+        this.totalCount--;
     }
 }

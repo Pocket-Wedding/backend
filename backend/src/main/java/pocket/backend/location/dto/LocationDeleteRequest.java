@@ -1,12 +1,13 @@
 package pocket.backend.location.dto;
 
 import jakarta.validation.constraints.NotBlank;
-import lombok.AllArgsConstructor;
 import lombok.Getter;
+import lombok.RequiredArgsConstructor;
 
-@AllArgsConstructor
+@RequiredArgsConstructor
 @Getter
-public class LocationRequest {
+public class LocationDeleteRequest {
+
     @NotBlank
     String name;
 }

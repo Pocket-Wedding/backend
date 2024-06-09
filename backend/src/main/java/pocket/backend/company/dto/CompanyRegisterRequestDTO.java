@@ -1,15 +1,14 @@
 package pocket.backend.company.dto;
 
+import jakarta.validation.constraints.Min;
 import jakarta.validation.constraints.NotBlank;
-import lombok.AllArgsConstructor;
+import jakarta.validation.constraints.NotNull;
 import lombok.Getter;
-import pocket.backend.company.domain.Company;
+import lombok.RequiredArgsConstructor;
 
-import java.util.Optional;
-
-@AllArgsConstructor(access = lombok.AccessLevel.PUBLIC)
+@RequiredArgsConstructor(access = lombok.AccessLevel.PUBLIC)
 @Getter
-public class CompanyRequest {
+public class CompanyRegisterRequestDTO {
 
     @NotBlank
     private String name;
@@ -22,7 +21,8 @@ public class CompanyRequest {
     @NotBlank
     private String phoneNumber;
 
-    @NotBlank
+    @NotNull
+    @Min(0)
     private Integer price;
 
     private String imageUrl;
