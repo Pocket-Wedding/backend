@@ -8,16 +8,17 @@ import org.mockito.Mock;
 import org.mockito.junit.jupiter.MockitoExtension;
 import pocket.backend.category.domain.Category;
 import pocket.backend.category.domain.CategoryRepository;
-import pocket.backend.category.dto.CategoryRequest;
+import pocket.backend.category.dto.CategoryRegisterRequest;
 import pocket.backend.common.exceptions.DuplicatedException;
 import pocket.backend.common.exceptions.ErrorCode;
 import pocket.backend.common.exceptions.NotFoundException;
 
 import java.util.Optional;
 
-import static org.junit.jupiter.api.Assertions.assertThrows;
-import static org.mockito.Mockito.*;
-import static org.assertj.core.api.Assertions.*;
+import static org.assertj.core.api.Assertions.assertThat;
+import static org.assertj.core.api.Assertions.assertThatThrownBy;
+import static org.mockito.Mockito.any;
+import static org.mockito.Mockito.when;
 
 @ExtendWith(MockitoExtension.class)
 public class CategoryServiceTest {
@@ -40,27 +41,27 @@ public class CategoryServiceTest {
     @DisplayName("카테고리를 등록한다.")
     @Test
     void registerCategory() {
-        CategoryRequest categoryRequest = new CategoryRequest("test");
+        CategoryRegisterRequest categoryRegisterRequest = new CategoryRegisterRequest("test");
 
         Category category = Category.builder()
                 .name("test")
                 .build();
 
-        when(categoryRepository.existsByName(categoryRequest.getName())).thenReturn(false);
+        when(categoryRepository.existsByName(categoryRegisterRequest.getName())).thenReturn(false);
         when(categoryRepository.save(any())).thenReturn(category);
 
-        assertThat(categoryService.registerCategory(categoryRequest)).isEqualTo(Optional.of(category));
+        assertThat(categoryService.registerCategory(categoryRegisterRequest)).isEqualTo(Optional.of(category));
 
     }
 
     @DisplayName("카테고리 중복 등록시 예외 발생")
     @Test
     void registerCategoryDuplicated() {
-        CategoryRequest categoryRequest = new CategoryRequest("test");
+        CategoryRegisterRequest categoryRegisterRequest = new CategoryRegisterRequest("test");
 
         when(categoryRepository.existsByName("test")).thenReturn(true);
 
-        assertThatThrownBy(() -> categoryService.registerCategory(categoryRequest))
+        assertThatThrownBy(() -> categoryService.registerCategory(categoryRegisterRequest))
                 .isInstanceOf(DuplicatedException.class)
                 .hasMessage(ErrorCode.DUPLICATED_CATEGORY_NAME.getMessage());
     }
