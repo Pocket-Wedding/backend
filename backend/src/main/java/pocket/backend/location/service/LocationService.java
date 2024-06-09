@@ -3,19 +3,24 @@ package pocket.backend.location.service;
 import jakarta.transaction.Transactional;
 import lombok.AccessLevel;
 import lombok.RequiredArgsConstructor;
-import org.springframework.beans.factory.annotation.Autowired;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
 import pocket.backend.common.exceptions.DuplicatedException;
 import pocket.backend.common.exceptions.ErrorCode;
 import pocket.backend.common.exceptions.NotFoundException;
 import pocket.backend.location.domain.Location;
 import pocket.backend.location.domain.LocationRepository;
-import pocket.backend.location.dto.LocationRequest;
+import pocket.backend.location.dto.LocationDeleteRequest;
+import pocket.backend.location.dto.LocationRegisterRequest;
+import pocket.backend.location.dto.LocationResponse;
+import pocket.backend.location.dto.LocationUpdateRequest;
 
+import java.util.List;
 import java.util.Optional;
 
 @RequiredArgsConstructor(access= AccessLevel.PUBLIC)
 @Service
+@Slf4j
 public class LocationService{
 
     private final LocationRepository locationRepository;
@@ -29,7 +34,9 @@ public class LocationService{
         return findLocation.getTotalCount();
     }
 
-    public Long getLocationIdByName(String name) {
+    public Long getLocationIdByName(String name)
+    {
+        log.info("name : {}", name);
         Location findLocation = locationRepository.findByName(name).orElseThrow(
                 () -> new NotFoundException(ErrorCode.NOT_FOUND_LOCATION)
         );
@@ -40,14 +47,18 @@ public class LocationService{
     public Optional<Location> getLocationByName(String name) {
         return locationRepository.findByName(name);
     }
+
+    public List<LocationResponse> getAllLocation() {
+        return LocationResponse.toList(locationRepository.findAll());
+    }
     // 해당 위치를 등록하는 메서드
     @Transactional
-    public void registerLocation(LocationRequest locationRequest) {
-        if(locationRepository.existsByName(locationRequest.getName())) {
+    public void registerLocation(LocationRegisterRequest locationRegisterRequest) {
+        if(locationRepository.existsByName(locationRegisterRequest.getName())) {
             throw new DuplicatedException(ErrorCode.DUPLICATED_LOCATION_NAME);
         }
         Location location = Location.builder()
-                .name(locationRequest.getName())
+                .name(locationRegisterRequest.getName())
                 .build();
 
         locationRepository.save(location);
@@ -55,17 +66,17 @@ public class LocationService{
 
     // 위치의 이름을 수정하는 메서드
     @Transactional
-    public void updateLocation(LocationRequest locationRequest) {
-        Location findLocation = locationRepository.findByName(locationRequest.getName()).orElseThrow(
+    public void updateLocation(LocationUpdateRequest locationUpdateRequest) {
+        Location findLocation = locationRepository.findByName(locationUpdateRequest.getPrevName()).orElseThrow(
                 () -> new NotFoundException(ErrorCode.NOT_FOUND_LOCATION)
         );
-        findLocation.updateLocation(locationRequest);
+        findLocation.updateLocation(locationUpdateRequest);
     }
 
     // 위치를 삭제하는 메서드
     @Transactional
-    public void deleteLocation(LocationRequest locationRequest) {
-        Location findLocation = locationRepository.findByName(locationRequest.getName()).orElseThrow(
+    public void deleteLocation(LocationDeleteRequest locationDeleteRequest) {
+        Location findLocation = locationRepository.findByName(locationDeleteRequest.getName()).orElseThrow(
                 () -> new NotFoundException(ErrorCode.NOT_FOUND_LOCATION)
         );
         locationRepository.delete(findLocation);
