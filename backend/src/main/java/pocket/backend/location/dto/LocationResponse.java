@@ -1,12 +1,33 @@
 package pocket.backend.location.dto;
 
-import jakarta.validation.constraints.NotBlank;
-import lombok.AllArgsConstructor;
 import lombok.Getter;
+import pocket.backend.location.domain.Location;
 
-@AllArgsConstructor
+import java.util.List;
+
 @Getter
 public class LocationResponse {
-    @NotBlank
+
     String name;
+
+    Long totalCount;
+
+    public LocationResponse(String name, Long totalCount) {
+        this.name = name;
+        this.totalCount = totalCount;
+    }
+
+    public static List<LocationResponse> toList(List<Location> locationList){
+        return locationList.stream()
+                .map(LocationResponse::of)
+                .toList();
+    }
+
+    private static LocationResponse of(Location location){
+        return new LocationResponse(
+                location.getName(),
+                location.getTotalCount()
+        );
+    }
+
 }
