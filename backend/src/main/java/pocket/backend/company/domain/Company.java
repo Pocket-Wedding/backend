@@ -1,21 +1,19 @@
 package pocket.backend.company.domain;
 
+import com.fasterxml.jackson.annotation.JsonManagedReference;
 import jakarta.persistence.*;
 import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
-import lombok.Setter;
 import pocket.backend.category.domain.Category;
 import pocket.backend.common.domain.BaseTimeEntity;
-import pocket.backend.company.dto.CompanyRequest;
+import pocket.backend.company.dto.CompanyUpdateRequestDTO;
 import pocket.backend.location.domain.Location;
 
 import java.util.Optional;
 
 @Entity
 @Getter
-@Setter
-@EntityListeners({CompanyListener.class})
 @NoArgsConstructor
 public class Company extends BaseTimeEntity {
     @Id
@@ -43,10 +41,12 @@ public class Company extends BaseTimeEntity {
 
     @ManyToOne
     @JoinColumn(name = "category_id", nullable = false)
+    @JsonManagedReference
     private Category category;
 
     @ManyToOne
     @JoinColumn(name = "location_id", nullable = false)
+    @JsonManagedReference
     private Location location;
 
     @Builder
@@ -59,5 +59,14 @@ public class Company extends BaseTimeEntity {
         this.imageUrl = imageUrl;
         this.category = category;
         this.location = location;
+    }
+
+    public void update(CompanyUpdateRequestDTO companyUpdateRequestDTO){
+        Optional.ofNullable(companyUpdateRequestDTO.getName()).ifPresent(name -> this.name = name);
+        Optional.ofNullable(companyUpdateRequestDTO.getDescribe()).ifPresent(describe -> this.describe = describe);
+        Optional.ofNullable(companyUpdateRequestDTO.getAddress()).ifPresent(address -> this.address = address);
+        Optional.ofNullable(companyUpdateRequestDTO.getPhoneNumber()).ifPresent(phoneNumber -> this.phoneNumber = phoneNumber);
+        Optional.ofNullable(companyUpdateRequestDTO.getPrice()).ifPresent(price -> this.price = price);
+        Optional.ofNullable(companyUpdateRequestDTO.getImageUrl()).ifPresent(imageUrl -> this.imageUrl = imageUrl);
     }
 }
