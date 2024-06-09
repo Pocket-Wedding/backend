@@ -7,7 +7,6 @@ import lombok.NoArgsConstructor;
 import lombok.Setter;
 
 @Getter
-@Setter
 @Entity
 @NoArgsConstructor(access=lombok.AccessLevel.PUBLIC)
 public class User {
@@ -67,4 +66,7 @@ public class User {
         return role.name();
     }
 
+    public void updateName(String name){
+        this.name = name;
+    }
 }
