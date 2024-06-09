@@ -1,10 +1,10 @@
 package pocket.backend.company.dto;
 
 import jakarta.validation.constraints.NotBlank;
-import lombok.AllArgsConstructor;
 import lombok.Getter;
+import lombok.RequiredArgsConstructor;
 
-@AllArgsConstructor
+@RequiredArgsConstructor(access = lombok.AccessLevel.PUBLIC)
 @Getter
 public class TotalRequestDTO {
 
