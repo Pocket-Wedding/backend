@@ -19,7 +19,6 @@ public class Category extends BaseTimeEntity {
     @Column(nullable = false)
     private String name;
 
-    @Setter
     @Column(nullable = false)
     private Long totalCount = 0L;
 
@@ -33,5 +32,13 @@ public class Category extends BaseTimeEntity {
 
     public void updateCategory(String name){
         Optional.ofNullable(name).ifPresent(n -> this.name = n);
+    }
+
+    public void increaseTotalCount(){
+        this.totalCount++;
+    }
+
+    public void decreaseTotalCount() {
+        this.totalCount--;
     }
 }
