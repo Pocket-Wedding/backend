@@ -1,4 +1,4 @@
-package pocket.backend.Hall;
+package pocket.backend.Hall.service;
 
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.Mock;
