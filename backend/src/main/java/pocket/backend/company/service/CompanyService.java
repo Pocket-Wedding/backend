@@ -10,13 +10,19 @@ import pocket.backend.common.exceptions.ErrorCode;
 import pocket.backend.common.exceptions.NotFoundException;
 import pocket.backend.company.domain.Company;
 import pocket.backend.company.domain.CompanyRepository;
-import pocket.backend.company.dto.*;
+import pocket.backend.company.dto.CompanyDeleteRequestDTO;
+import pocket.backend.company.dto.CompanyRegisterRequestDTO;
+import pocket.backend.company.dto.CompanyResponse;
+import pocket.backend.company.dto.CompanyUpdateRequestDTO;
 import pocket.backend.location.domain.Location;
 import pocket.backend.location.service.LocationService;
 
 import java.util.Collections;
 import java.util.List;
 import java.util.Optional;
+
+import static pocket.backend.common.validator.NameValidator.isValidCategoryName;
+import static pocket.backend.common.validator.NameValidator.isValidLocationName;
 
 @RequiredArgsConstructor
 @Service
@@ -30,14 +36,16 @@ public class CompanyService {
 
     // 모든 업체를 조사하는 메서드
     @Transactional
-    public List<CompanyResponse> findAllCompanies(){
+    public List<CompanyResponse> findAllCompanies() {
         return Collections.unmodifiableList(CompanyResponse.listOf(companyRepository.findAll()));
     }
 
     // 특정 지역에 있는 모든 업체 조회
     @Transactional
-    public List<CompanyResponse> findAllCompaniesByLocationId(String name){
-        Long locationId = locationService.getLocationIdByName(name);
+    public List<CompanyResponse> findAllCompaniesByLocationId(String locationName) {
+        isValidLocationName(locationName);
+        Long locationId = locationService.getLocationIdByName(locationName);
+
         return CompanyResponse.listOf(companyRepository.findAllByLocationId(locationId).orElseThrow(
                 () -> new NotFoundException(ErrorCode.NOT_FOUND_COMPANY)
         ));
@@ -45,7 +53,8 @@ public class CompanyService {
 
     // 특정 카테고리에 있는 모든 업체 조회
     @Transactional
-    public List<CompanyResponse> findAllCompaniesByCategoryId(String categoryName){
+    public List<CompanyResponse> findAllCompaniesByCategoryId(String categoryName) {
+
         Long categoryId = categoryService.getCategoryIdByName(categoryName);
         return CompanyResponse.listOf(companyRepository.findAllByCategoryId(categoryId).orElseThrow(
                 () -> new NotFoundException(ErrorCode.NOT_FOUND_COMPANY)
@@ -55,6 +64,8 @@ public class CompanyService {
     // 특정 지역에 있는 스튜디오 업체 조회
     @Transactional
     public List<CompanyResponse> findAllCompaniesByLocationIdAndCategoryId(String locationName, String categoryName) {
+        isValidLocationName(locationName);
+        isValidCategoryName(categoryName);
         Long locationId = locationService.getLocationIdByName(locationName);
         Long categoryId = categoryService.getCategoryIdByName(categoryName);
         return CompanyResponse.listOf(companyRepository.findAllByLocationIdAndCategoryId(locationId, categoryId).orElseThrow(
@@ -78,15 +89,15 @@ public class CompanyService {
         category.increaseTotalCount();
 
         Company registeredCompany = Company.builder()
-                        .name(companyRegisterRequestDTO.getName())
-                        .describe(companyRegisterRequestDTO.getDescribe())
-                        .address(companyRegisterRequestDTO.getAddress())
-                        .phoneNumber(companyRegisterRequestDTO.getPhoneNumber())
-                        .price(companyRegisterRequestDTO.getPrice())
-                        .imageUrl(companyRegisterRequestDTO.getImageUrl())
-                        .category(category)
-                        .location(location)
-                        .build();
+                .name(companyRegisterRequestDTO.getName())
+                .describe(companyRegisterRequestDTO.getDescribe())
+                .address(companyRegisterRequestDTO.getAddress())
+                .phoneNumber(companyRegisterRequestDTO.getPhoneNumber())
+                .price(companyRegisterRequestDTO.getPrice())
+                .imageUrl(companyRegisterRequestDTO.getImageUrl())
+                .category(category)
+                .location(location)
+                .build();
 
         companyRepository.save(registeredCompany);
         return Optional.empty();

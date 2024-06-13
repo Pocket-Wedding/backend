@@ -4,12 +4,11 @@ import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
+import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.junit.jupiter.MockitoExtension;
 import pocket.backend.common.exceptions.AuthException;
 import pocket.backend.common.exceptions.ErrorCode;
-import pocket.backend.user.domain.AuthProvider;
-import pocket.backend.user.domain.Role;
 import pocket.backend.user.domain.User;
 import pocket.backend.user.domain.UserRepository;
 import pocket.backend.user.dto.SignUpRequest;
@@ -24,13 +23,13 @@ public class UserServiceTest {
     @Mock
     private UserRepository userRepository;
 
+    @InjectMocks
     private UserService userService;
 
     private User user;
 
     @BeforeEach
     void setUp() {
-        userService = new UserService(userRepository);
         user = User.builder()
                 .id(1L)
                 .email("tees3359@gmail.com")
@@ -49,19 +48,6 @@ public class UserServiceTest {
     @Test
     void registerUser() {
         SignUpRequest signUpRequest = new SignUpRequest("a@gmail.com", "test", "1234");
-        User user = new User();
-        user.setId(1L);
-        user.setEmail("a@gmail.com");
-        user.setName("test");
-        user.setPassword("1234");
-        user.setRole(Role.ROLE_USER);
-        user.setPhoneNumber(null);
-        user.setBank(null);
-        user.setAccountNumber(null);
-        user.setProvider(null);
-        user.setProviderId(null);
-        user.setDeleted(false);
-
 
         when(userRepository.existsByEmail(signUpRequest.getEmail())).thenReturn(false);
         when(userRepository.save(any())).thenReturn(user);
@@ -73,16 +59,6 @@ public class UserServiceTest {
     @Test
     void registerUserWithException() {
         SignUpRequest signUpRequest = new SignUpRequest("아이디", "a@email.com", "password");
-
-        User user = new User();
-        user.setId(1L);
-        user.setEmail("a@email.com");
-        user.setEmailVerified(true);
-        user.setName("hi");
-        user.setPassword("password");
-        user.setProvider(AuthProvider.local);
-        user.setRole(Role.ROLE_USER);
-        user.setProviderId("local");
 
         when(userRepository.existsByEmail(any())).thenReturn(true);
 

@@ -17,14 +17,17 @@ import pocket.backend.common.exceptions.NotFoundException;
 import java.util.List;
 import java.util.Optional;
 
-@RequiredArgsConstructor(access= AccessLevel.PUBLIC)
+import static pocket.backend.common.validator.NameValidator.isValidCategoryName;
+
+@RequiredArgsConstructor(access = AccessLevel.PUBLIC)
 @Service
-public class CategoryService{
+public class CategoryService {
 
     private final CategoryRepository categoryRepository;
 
     // 해당 카테고리의 업체가 몇개인지 확인하는 메서드
     public Long countCategory(String name) {
+        isValidCategoryName(name);
         Category findCategory = categoryRepository.findByName(name).orElseThrow(
                 () -> new NotFoundException(ErrorCode.NOT_FOUND_CATEGORY)
         );
@@ -32,6 +35,7 @@ public class CategoryService{
     }
 
     public Long getCategoryIdByName(String name) {
+        isValidCategoryName(name);
         Category findCategory = categoryRepository.findByName(name).orElseThrow(
                 () -> new NotFoundException(ErrorCode.NOT_FOUND_CATEGORY)
         );
@@ -43,14 +47,22 @@ public class CategoryService{
     }
 
     public Optional<Category> getCategoryByName(String name) {
+        isValidCategoryName(name);
+        if (!categoryRepository.existsByName(name)) {
+            throw new NotFoundException(ErrorCode.NOT_FOUND_CATEGORY);
+        }
         return categoryRepository.findByName(name);
     }
+
     // 카테고리를 등록하는 메서드
     @Transactional
     public Optional<Category> registerCategory(CategoryRegisterRequest categoryRegisterRequest) {
-        if(categoryRepository.existsByName(categoryRegisterRequest.getName())) {
+        isValidCategoryName(categoryRegisterRequest.getName());
+
+        if (categoryRepository.existsByName(categoryRegisterRequest.getName())) {
             throw new DuplicatedException(ErrorCode.DUPLICATED_CATEGORY_NAME);
         }
+
         Category category = Category.builder()
                 .name(categoryRegisterRequest.getName())
                 .build();
@@ -63,6 +75,11 @@ public class CategoryService{
         Category prevCategory = categoryRepository.findByName(categoryUpdateRequest.getPrevName()).orElseThrow(
                 () -> new NotFoundException(ErrorCode.NOT_FOUND_CATEGORY)
         );
+
+        if (categoryRepository.existsByName(categoryUpdateRequest.getNewName())) {
+            throw new DuplicatedException(ErrorCode.DUPLICATED_CATEGORY_NAME);
+        }
+
         prevCategory.updateCategory(categoryUpdateRequest.getNewName());
     }
 
