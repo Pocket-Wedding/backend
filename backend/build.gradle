@@ -57,7 +57,7 @@ jib{
     }
     to {
         image = 'docker.io/ghkd110/pocket-wedding-backend'
-        tags = ['1.0']
+        tags = ['latest']
         auth {
             username = findProperty('jib.to.auth.username') ?: " "
             password = findProperty('jib.to.auth.password') ?: " "

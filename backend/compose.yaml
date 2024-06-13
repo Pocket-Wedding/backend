@@ -28,7 +28,7 @@ services:
     networks:
       - 'pocket'
   backend:
-    image: 'ghkd110/jib_test:0.8'
+    image: 'ghkd110/pocket-wedding-backend:latest'
     container_name: 'backend'
     environment:
       USE_PROFILE: prod
@@ -37,3 +37,5 @@ services:
     ports:
       - '8080:8080'
     restart: 'always'
+    networks:
+      - 'pocket'
