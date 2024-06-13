@@ -18,6 +18,8 @@ import pocket.backend.location.dto.LocationUpdateRequest;
 import java.util.List;
 import java.util.Optional;
 
+import static pocket.backend.common.validator.NameValidator.isValidLocationName;
+
 @RequiredArgsConstructor(access= AccessLevel.PUBLIC)
 @Service
 @Slf4j
@@ -27,6 +29,7 @@ public class LocationService{
 
     // 해당 위치의 업체가 몇개인지 확인하는 메서드
     public Long countLocation(String name) {
+        isValidLocationName(name);
         Location findLocation = locationRepository.findByName(name).orElseThrow(
                 () -> new NotFoundException(ErrorCode.NOT_FOUND_LOCATION)
         );
@@ -34,17 +37,15 @@ public class LocationService{
         return findLocation.getTotalCount();
     }
 
-    public Long getLocationIdByName(String name)
-    {
-        log.info("name : {}", name);
-        Location findLocation = locationRepository.findByName(name).orElseThrow(
+    public Long getLocationIdByName(String name) {
+        isValidLocationName(name);
+        return locationRepository.findByName(name).orElseThrow(
                 () -> new NotFoundException(ErrorCode.NOT_FOUND_LOCATION)
-        );
-
-        return findLocation.getId();
+        ).getId();
     }
 
     public Optional<Location> getLocationByName(String name) {
+        isValidLocationName(name);
         return locationRepository.findByName(name);
     }
 
@@ -54,14 +55,14 @@ public class LocationService{
     // 해당 위치를 등록하는 메서드
     @Transactional
     public void registerLocation(LocationRegisterRequest locationRegisterRequest) {
+        isValidLocationName(locationRegisterRequest.getName());
         if(locationRepository.existsByName(locationRegisterRequest.getName())) {
             throw new DuplicatedException(ErrorCode.DUPLICATED_LOCATION_NAME);
         }
-        Location location = Location.builder()
-                .name(locationRegisterRequest.getName())
-                .build();
 
-        locationRepository.save(location);
+        locationRepository.save(Location.builder()
+                .name(locationRegisterRequest.getName())
+                .build());
     }
 
     // 위치의 이름을 수정하는 메서드
@@ -70,12 +71,16 @@ public class LocationService{
         Location findLocation = locationRepository.findByName(locationUpdateRequest.getPrevName()).orElseThrow(
                 () -> new NotFoundException(ErrorCode.NOT_FOUND_LOCATION)
         );
+
+        isValidLocationName(locationUpdateRequest.getNewName());
+
         findLocation.updateLocation(locationUpdateRequest);
     }
 
     // 위치를 삭제하는 메서드
     @Transactional
     public void deleteLocation(LocationDeleteRequest locationDeleteRequest) {
+        isValidLocationName(locationDeleteRequest.getName());
         Location findLocation = locationRepository.findByName(locationDeleteRequest.getName()).orElseThrow(
                 () -> new NotFoundException(ErrorCode.NOT_FOUND_LOCATION)
         );
