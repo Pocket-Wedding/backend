@@ -57,7 +57,6 @@ public class LocationServiceTest {
         when(locationRepository.save(any())).thenReturn(location);
         //then
         locationService.registerLocation(locationRegisterRequest);
-        assertThat(locationRepository.count()).isEqualTo(2);
         verify(locationRepository).save(any());
     }
 }
