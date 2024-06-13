@@ -8,8 +8,6 @@ import org.mockito.junit.jupiter.MockitoExtension;
 import pocket.backend.company.domain.Company;
 import pocket.backend.company.domain.CompanyRepository;
 
-import static org.junit.jupiter.api.Assertions.*;
-
 @ExtendWith(MockitoExtension.class)
 class CompanyServiceTest{
     @Mock
