@@ -5,7 +5,9 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import pocket.backend.hall.domain.Hall;
-import pocket.backend.hall.dto.HallRequest;
+import pocket.backend.hall.dto.HallRegisterRequestDTO;
+import pocket.backend.hall.dto.HallRequestDTO;
+import pocket.backend.hall.dto.HallUpdateRequestDTO;
 import pocket.backend.hall.service.HallService;
 
 import java.util.List;
@@ -20,8 +22,8 @@ public class HallController {
 
     // WeddingHall 정보 생성
     @PostMapping("/register")
-    public ResponseEntity<Hall> createHall(@RequestBody HallRequest hallRequest) {
-        Hall hall = hallService.createHall(hallRequest);
+    public ResponseEntity<Hall> createHall(@RequestBody HallRegisterRequestDTO hallRegister) {
+        Hall hall = hallService.createHall(hallRegister);
         return ResponseEntity.ok(hall);
     }
 
@@ -41,8 +43,8 @@ public class HallController {
 
     // WeddingHall 정보 수정
     @PutMapping("/update/{id}")
-    public ResponseEntity<Hall> updateHall(@PathVariable Long id, @RequestBody HallRequest hallRequest) {
-        Hall hall = hallService.updateHall(id, hallRequest);
+    public ResponseEntity<Hall> updateHall(@PathVariable Long id, @RequestBody HallUpdateRequestDTO hallUpdate) {
+        Hall hall = hallService.updateHall(id, hallUpdate);
         return ResponseEntity.ok(hall);
     }
 
