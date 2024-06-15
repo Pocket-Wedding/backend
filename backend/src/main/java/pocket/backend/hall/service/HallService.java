@@ -5,7 +5,8 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import pocket.backend.hall.domain.Hall;
 import pocket.backend.hall.domain.HallRepository;
-import pocket.backend.hall.dto.HallRequest;
+import pocket.backend.hall.dto.HallRegisterRequestDTO;
+import pocket.backend.hall.dto.HallUpdateRequestDTO;
 
 import java.util.List;
 
@@ -16,18 +17,19 @@ public class HallService {
 
     private final HallRepository hallRepository;
 
-    public Hall createHall(HallRequest hallRequest) {
+    public Hall createHall(HallRegisterRequestDTO hallRegister) {
         Hall hall = Hall.builder()
-                .name(hallRequest.getName())
-                .address(hallRequest.getAddress())
-                .hallForm(hallRequest.getHallForm())
-                .price(hallRequest.getPrice())
-                .menu(hallRequest.getMenu())
-                .seat(hallRequest.getSeat())
-                .weddingForm(hallRequest.getWeddingForm())
-                .image(hallRequest.getImage())
-                .description(hallRequest.getDescription())
-                .count(hallRequest.getCount())
+                .name(hallRegister.getName())
+                .address(hallRegister.getAddress())
+                .phoneNumber(hallRegister.getPhoneNumber())
+                .hallForm(hallRegister.getHallForm())
+                .price(hallRegister.getPrice())
+                .menu(hallRegister.getMenu())
+                .seat(hallRegister.getSeat())
+                .weddingForm(hallRegister.getWeddingForm())
+                .image(hallRegister.getImage())
+                .description(hallRegister.getDescription())
+                .count(hallRegister.getCount())
                 .build();
         return hallRepository.save(hall);
     }
@@ -41,19 +43,20 @@ public class HallService {
         return hallRepository.findAll();
     }
 
-    public Hall updateHall(Long id, HallRequest hallRequest) {
+    public Hall updateHall(Long id, HallUpdateRequestDTO hallUpdate) {
         Hall hall = hallRepository.findById(id).orElseThrow(() ->
                 new IllegalArgumentException("Invalid hall Id:" + id));
-        hall.setName(hallRequest.getName());
-        hall.setAddress(hallRequest.getAddress());
-        hall.setHallForm(hallRequest.getHallForm());
-        hall.setPrice(hallRequest.getPrice());
-        hall.setMenu(hallRequest.getMenu());
-        hall.setSeat(hallRequest.getSeat());
-        hall.setWeddingForm(hallRequest.getWeddingForm());
-        hall.setImage(hallRequest.getImage());
-        hall.setDescription(hallRequest.getDescription());
-        hall.setCount(hallRequest.getCount());
+        hall.setName(hallUpdate.getName());
+        hall.setAddress(hallUpdate.getAddress());
+        hall.setPhoneNumber(hallUpdate.getPhoneNumber());
+        hall.setHallForm(hallUpdate.getHallForm());
+        hall.setPrice(hallUpdate.getPrice());
+        hall.setMenu(hallUpdate.getMenu());
+        hall.setSeat(hallUpdate.getSeat());
+        hall.setWeddingForm(hallUpdate.getWeddingForm());
+        hall.setImage(hallUpdate.getImage());
+        hall.setDescription(hallUpdate.getDescription());
+        hall.setCount(hallUpdate.getCount());
         return hallRepository.save(hall);
     }
 
