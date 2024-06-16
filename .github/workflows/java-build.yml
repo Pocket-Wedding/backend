@@ -80,7 +80,7 @@ jobs:
           restore-keys: |
             ${{ runner.os }}-gradle-
       - name: Build with Gradle Wrapper
-        run: cd backend && ./gradlew build
+        run: cd backend && ./gradlew clean build
   dependency-submission:
     runs-on: ubuntu-latest
     strategy:
