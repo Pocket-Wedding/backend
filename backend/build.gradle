@@ -3,10 +3,16 @@ plugins {
     id 'org.springframework.boot' version '3.2.5'
     id 'io.spring.dependency-management' version '1.1.4'
     id 'com.google.cloud.tools.jib' version '3.4.2'
+    id 'jacoco'
 }
 
 group = 'pocket'
 version = 'latest'
+
+jacoco{
+    toolVersion = '0.8.7'
+    reportsDirectory = layout.buildDirectory.dir('customJacoco')
+}
 
 java {
     sourceCompatibility = '17'
@@ -33,11 +39,52 @@ dependencies {
     testImplementation 'org.springframework.boot:spring-boot-starter-test'
     testRuntimeOnly 'org.junit.platform:junit-platform-launcher'
     implementation 'org.springframework.boot:spring-boot-starter-validation'
-    implementation 'org.springdoc:springdoc-openapi-starter-webmvc-ui:2.0.2'
+    implementation 'org.springdoc:springdoc-openapi-starter-webmvc-ui:2.3.0'
+
+    implementation 'org.springframework.boot:spring-boot-starter-batch'
+    implementation'org.springframework.boot:spring-boot-starter-quartz'
 }
 
 tasks.named('test') {
+    finalizedBy jacocoTestReport
     useJUnitPlatform()
+}
+
+jacocoTestReport {
+    reports {
+        html.required=true
+        html.outputLocation = layout.buildDirectory.dir('jacocoHtml')
+        xml.required=true
+        csv.required=false
+    }
+}
+
+jacocoTestReport{
+    dependsOn test
+    finalizedBy 'jacocoTestCoverageVerification'
+}
+
+jacocoTestCoverageVerification{
+    violationRules {
+        rule {
+            limit {
+                minimum = 0.2
+            }
+        }
+
+        rule{
+            enabled = false
+            element = 'CLASS'
+
+
+            limit{
+                counter = 'LINE'
+                value = 'TOTALCOUNT'
+                minimum = 0.3
+
+            }
+        }
+    }
 }
 
 jib{
