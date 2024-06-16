@@ -87,19 +87,19 @@ class CompanyTest {
         CompanyUpdateRequestDTO updateDTO = new CompanyUpdateRequestDTO(
                 1L,
                 "Partially Updated Company",
-                null,
-                null,
-                null,
-                null,
-                null
+                "TEST!",
+                "서울시 종로구",
+                "010-5678-1234",
+                100000,
+                "http://example.com/image.jpg"
         );
 
         company.update(updateDTO);
 
         assertEquals("Partially Updated Company", company.getName());
-        assertEquals("This is a test company.", company.getDescribe());
-        assertEquals("123 Test Street", company.getAddress());
-        assertEquals("010-1234-5678", company.getPhoneNumber());
+        assertEquals("TEST!", company.getDescribe());
+        assertEquals("서울시 종로구", company.getAddress());
+        assertEquals("010-5678-1234", company.getPhoneNumber());
         assertEquals(100000, company.getPrice());
         assertEquals("http://example.com/image.jpg", company.getImageUrl());
     }
