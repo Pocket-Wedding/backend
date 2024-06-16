@@ -60,14 +60,20 @@ jobs:
           spring.datasource.username=${{ secrets.SPRING_DATASOURCE_USERNAME }}
           spring.datasource.password=${{ secrets.SPRING_DATASOURCE_PASSWORD }}
           spring.datasource.driver-class-name=org.postgresql.Driver
+          spring.jpa.database-platform=org.hibernate.dialect.PostgreSQLDialect
           spring.jpa.hibernate.ddl-auto=update
           spring.jpa.show-sql=true
           spring.jpa.properties.hibernate.dialect=org.hibernate.dialect.PostgreSQLDialect
+          
+          # Batch Config
+          spring.batch.jdbc.initialize-schema=always
+          spring.batch.job.enabled=false
           
           # Logging
           logging.level.org.springframework.web=DEBUG
           logging.level.pocket.backend=DEBUG
           logging.level.org.hibernate=ERROR
+          
           EOF
           chmod 600 application.properties
       - name: Cache Gradle packages
@@ -80,7 +86,7 @@ jobs:
           restore-keys: |
             ${{ runner.os }}-gradle-
       - name: Build with Gradle Wrapper
-        run: cd backend && ./gradlew build
+        run: cd backend && ./gradlew clean build
   dependency-submission:
     runs-on: ubuntu-latest
     strategy:
