@@ -6,7 +6,6 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import pocket.backend.hall.domain.Hall;
 import pocket.backend.hall.dto.HallRegisterRequestDTO;
-import pocket.backend.hall.dto.HallRequestDTO;
 import pocket.backend.hall.dto.HallUpdateRequestDTO;
 import pocket.backend.hall.service.HallService;
 
