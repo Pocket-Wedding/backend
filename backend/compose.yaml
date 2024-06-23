@@ -1,6 +1,6 @@
 networks:
   pocket:
-    driver: 'bridge'
+    external: true
 services:
   postgres:
     image: 'postgres:latest'
