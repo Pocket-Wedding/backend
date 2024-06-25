@@ -1,7 +1,10 @@
 package pocket.backend.hall.controller;
 
+import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.tags.Tag;
+import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
+import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import pocket.backend.hall.domain.Hall;
@@ -19,11 +22,11 @@ public class HallController {
 
     private final HallService hallService;
 
-    // WeddingHall 정보 생성
+    @Operation(summary = "웨딩홀을 등록하는 API")
     @PostMapping("/register")
-    public ResponseEntity<Hall> createHall(@RequestBody HallRegisterRequestDTO hallRegister) {
-        Hall hall = hallService.createHall(hallRegister);
-        return ResponseEntity.ok(hall);
+    public ResponseEntity<Void> registerHall(@RequestBody @Valid HallRegisterRequestDTO hallRegisterRequestDTO) {
+        hallService.registerHall(hallRegisterRequestDTO);
+        return ResponseEntity.status(HttpStatus.CREATED).build();
     }
 
     // WeddingHall 특정 정보 조회
