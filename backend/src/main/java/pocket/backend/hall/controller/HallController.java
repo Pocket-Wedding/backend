@@ -8,6 +8,7 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import pocket.backend.hall.domain.Hall;
+import pocket.backend.hall.dto.HallDeleteRequestDTO;
 import pocket.backend.hall.dto.HallRegisterRequestDTO;
 import pocket.backend.hall.dto.HallUpdateRequestDTO;
 import pocket.backend.hall.service.HallService;
@@ -44,16 +45,16 @@ public class HallController {
     }
 
     @Operation(summary = "웨딩홀을 수정하는 API")
-    @PutMapping("/update/{id}")
+    @PutMapping("/update")
     public ResponseEntity<Void> updateHall(@RequestBody @Valid HallUpdateRequestDTO hallUpdateRequestDTO) {
         hallService.updateHall(hallUpdateRequestDTO);
         return ResponseEntity.noContent().build();
     }
 
     @Operation(summary = "웨딩홀을 삭제하는 API")
-    @DeleteMapping("/delete/{id}")
-    public ResponseEntity<Void> deleteHall(@PathVariable Long id) {
-        hallService.deleteHall(id);
-        return ResponseEntity.noContent().build();
+    @DeleteMapping("/delete")
+    public ResponseEntity<Void> deleteHall(@RequestBody @Valid HallDeleteRequestDTO hallDeleteRequestDTO) {
+        hallService.deleteHall(hallDeleteRequestDTO);
+        return ResponseEntity.status(HttpStatus.NO_CONTENT).build();
     }
 }
