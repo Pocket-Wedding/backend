@@ -1,37 +1,47 @@
 package pocket.backend.hall.service;
 
+import lombok.AccessLevel;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
+import pocket.backend.common.exceptions.DuplicatedException;
+import pocket.backend.common.exceptions.ErrorCode;
 import pocket.backend.hall.domain.Hall;
 import pocket.backend.hall.domain.HallRepository;
 import pocket.backend.hall.dto.HallRegisterRequestDTO;
 import pocket.backend.hall.dto.HallUpdateRequestDTO;
 
 import java.util.List;
+import java.util.Optional;
 
 @Service
-@RequiredArgsConstructor
-@Transactional
+@RequiredArgsConstructor(access = AccessLevel.PUBLIC)
 public class HallService {
 
     private final HallRepository hallRepository;
 
-    public Hall createHall(HallRegisterRequestDTO hallRegister) {
+    @Transactional
+    public Optional<Hall> registerHall(HallRegisterRequestDTO hallRegisterRequestDTO) {
+
+        if (hallRepository.existsByName(hallRegisterRequestDTO.getName())) {
+            throw new DuplicatedException(ErrorCode.DUPLICATED_CATEGORY_NAME);
+        }
+
         Hall hall = Hall.builder()
-                .name(hallRegister.getName())
-                .address(hallRegister.getAddress())
-                .phoneNumber(hallRegister.getPhoneNumber())
-                .hallForm(hallRegister.getHallForm())
-                .price(hallRegister.getPrice())
-                .menu(hallRegister.getMenu())
-                .seat(hallRegister.getSeat())
-                .weddingForm(hallRegister.getWeddingForm())
-                .image(hallRegister.getImage())
-                .description(hallRegister.getDescription())
-                .count(hallRegister.getCount())
+                .name(hallRegisterRequestDTO.getName())
+                .address(hallRegisterRequestDTO.getAddress())
+                .phoneNumber(hallRegisterRequestDTO.getPhoneNumber())
+                .hallForm(hallRegisterRequestDTO.getHallForm())
+                .price(hallRegisterRequestDTO.getPrice())
+                .menu(hallRegisterRequestDTO.getMenu())
+                .seat(hallRegisterRequestDTO.getSeat())
+                .weddingForm(hallRegisterRequestDTO.getWeddingForm())
+                .image(hallRegisterRequestDTO.getImage())
+                .description(hallRegisterRequestDTO.getDescription())
+                .count(hallRegisterRequestDTO.getCount())
                 .build();
-        return hallRepository.save(hall);
+
+        return Optional.of(hallRepository.save(hall));
     }
 
     public Hall getHall(Long id) {

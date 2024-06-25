@@ -29,12 +29,12 @@ public class Hall {
     private String hallForm;
 
     @Column(nullable = false)
-    private Integer price;
+    private int price;
 
     @Column(nullable = false)
     private String menu;
 
-    private Integer seat;
+    private int seat;
 
     @Column(nullable = false)
     private String weddingForm;
@@ -46,10 +46,10 @@ public class Hall {
     private String description;
 
     @Column(nullable = false)
-    private Integer count;
+    private int count;
 
     @Builder
-    public Hall(Long id, String name, String address, String phoneNumber, String hallForm, Integer price, String menu, Integer seat, String weddingForm, String image, String description, Integer count) {
+    public Hall(Long id, String name, String address, String phoneNumber, String hallForm, int price, String menu, int seat, String weddingForm, String image, String description, int count) {
         this.id = id;
         this.name = name;
         this.address = address;

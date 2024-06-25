@@ -2,43 +2,46 @@ package pocket.backend.hall.dto;
 
 import jakarta.validation.constraints.Min;
 import jakarta.validation.constraints.NotBlank;
+import jakarta.validation.constraints.NotNull;
+import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.RequiredArgsConstructor;
 
-@RequiredArgsConstructor(access = lombok.AccessLevel.PUBLIC)
+@RequiredArgsConstructor
+@AllArgsConstructor
 @Getter
 public class HallRegisterRequestDTO {
 
     @NotBlank
-    private String name;
+    String name;
 
     @NotBlank
-    private String address;
+    String address;
 
     @NotBlank
-    private String phoneNumber;
+    String phoneNumber;
 
     @NotBlank
-    private String hallForm;
+    String hallForm;
 
-    @NotBlank
+    @NotNull
     @Min(0)
-    private Integer price;
+    int price;
 
     @NotBlank
-    private String menu;
+    String menu;
 
-    private Integer seat;
-
-    @NotBlank
-    private String weddingForm;
-
-    private String image;
+    int seat;
 
     @NotBlank
-    private String description;
+    String weddingForm;
+
+    String image;
 
     @NotBlank
-    private Integer count;
+    String description;
+
+    @NotNull
+    int count;
 
 }
