@@ -25,12 +25,13 @@ public class HallRegisterRequestDTO {
     String hallForm;
 
     @NotNull
-    @Min(0)
+    @Min(value = 0, message = "Count must be greater than or equal to 0")
     int price;
 
     @NotBlank
     String menu;
 
+    @Min(value = 0, message = "Count must be greater than or equal to 0")
     int seat;
 
     @NotBlank
@@ -42,6 +43,7 @@ public class HallRegisterRequestDTO {
     String description;
 
     @NotNull
+    @Min(value = 0, message = "Count must be greater than or equal to 0")
     int count;
 
 }
