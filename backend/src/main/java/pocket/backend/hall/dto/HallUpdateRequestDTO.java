@@ -3,16 +3,18 @@ package pocket.backend.hall.dto;
 import jakarta.validation.constraints.Min;
 import jakarta.validation.constraints.NotNull;
 import jakarta.validation.constraints.Pattern;
+import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.RequiredArgsConstructor;
 
 @RequiredArgsConstructor
+@AllArgsConstructor
 @Getter
 public class HallUpdateRequestDTO {
 
-    @NotNull
-    @Min(0)
-    private Long id;
+//    @NotNull
+//    @Min(0)
+//    private Long id;
 
     private String name;
 
