@@ -29,28 +29,28 @@ public class HallController {
         return ResponseEntity.status(HttpStatus.CREATED).build();
     }
 
-    // WeddingHall 특정 정보 조회
+    @Operation(summary = "모든 특정 웨딩홀의 정보를 반환하는 API")
     @GetMapping("/show/{id}")
     public ResponseEntity<Hall> getHall(@PathVariable Long id) {
         Hall hall = hallService.getHall(id);
         return ResponseEntity.ok(hall);
     }
 
-    // WeddingHall 전체 정보 조회
+    @Operation(summary = "모든 웨딩홀의 리스트를 반환하는 API")
     @GetMapping("/show")
     public ResponseEntity<List<Hall>> getAllHalls() {
         List<Hall> halls = hallService.getAllHalls();
         return ResponseEntity.ok(halls);
     }
 
-    // WeddingHall 정보 수정
+    @Operation(summary = "웨딩홀을 수정하는 API")
     @PutMapping("/update/{id}")
-    public ResponseEntity<Hall> updateHall(@PathVariable Long id, @RequestBody HallUpdateRequestDTO hallUpdate) {
-        Hall hall = hallService.updateHall(id, hallUpdate);
-        return ResponseEntity.ok(hall);
+    public ResponseEntity<Void> updateHall(@RequestBody @Valid HallUpdateRequestDTO hallUpdateRequestDTO) {
+        hallService.updateHall(hallUpdateRequestDTO);
+        return ResponseEntity.noContent().build();
     }
 
-    // WeddingHall 정보 삭제
+    @Operation(summary = "웨딩홀을 삭제하는 API")
     @DeleteMapping("/delete/{id}")
     public ResponseEntity<Void> deleteHall(@PathVariable Long id) {
         hallService.deleteHall(id);

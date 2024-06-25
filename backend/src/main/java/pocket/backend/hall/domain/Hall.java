@@ -5,6 +5,10 @@ import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
+import pocket.backend.hall.dto.HallUpdateRequestDTO;
+
+import javax.swing.text.html.Option;
+import java.util.Optional;
 
 @NoArgsConstructor(access=lombok.AccessLevel.PROTECTED)
 @Entity
@@ -62,5 +66,18 @@ public class Hall {
         this.image = image;
         this.description = description;
         this.count = count;
+    }
+
+    public void update(HallUpdateRequestDTO hallUpdateRequestDTO) {
+        Optional.ofNullable(hallUpdateRequestDTO.getName()).ifPresent(name -> this.name = name);
+        Optional.ofNullable(hallUpdateRequestDTO.getAddress()).ifPresent(address -> this.address = address);
+        Optional.ofNullable(hallUpdateRequestDTO.getPhoneNumber()).ifPresent(phoneNumber -> this.phoneNumber = phoneNumber);
+        Optional.ofNullable(hallUpdateRequestDTO.getHallForm()).ifPresent(hallForm -> this.hallForm = hallForm);
+        Optional.ofNullable(hallUpdateRequestDTO.getPrice()).ifPresent(price -> this.price = price);
+        Optional.ofNullable(hallUpdateRequestDTO.getMenu()).ifPresent(menu -> this.menu = menu);
+        Optional.ofNullable(hallUpdateRequestDTO.getWeddingForm()).ifPresent(weddingForm -> this.weddingForm = weddingForm);
+        Optional.ofNullable(hallUpdateRequestDTO.getImage()).ifPresent(image -> this.image = image);
+        Optional.ofNullable(hallUpdateRequestDTO.getDescription()).ifPresent(description -> this.description = description);
+        Optional.ofNullable(hallUpdateRequestDTO.getCount()).ifPresent(count -> this.count = count);
     }
 }

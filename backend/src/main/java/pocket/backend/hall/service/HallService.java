@@ -53,21 +53,12 @@ public class HallService {
         return hallRepository.findAll();
     }
 
-    public Hall updateHall(Long id, HallUpdateRequestDTO hallUpdate) {
-        Hall hall = hallRepository.findById(id).orElseThrow(() ->
-                new IllegalArgumentException("Invalid hall Id:" + id));
-        hall.setName(hallUpdate.getName());
-        hall.setAddress(hallUpdate.getAddress());
-        hall.setPhoneNumber(hallUpdate.getPhoneNumber());
-        hall.setHallForm(hallUpdate.getHallForm());
-        hall.setPrice(hallUpdate.getPrice());
-        hall.setMenu(hallUpdate.getMenu());
-        hall.setSeat(hallUpdate.getSeat());
-        hall.setWeddingForm(hallUpdate.getWeddingForm());
-        hall.setImage(hallUpdate.getImage());
-        hall.setDescription(hallUpdate.getDescription());
-        hall.setCount(hallUpdate.getCount());
-        return hallRepository.save(hall);
+    public Optional<Void> updateHall(HallUpdateRequestDTO hallUpdateRequestDTO) {
+        Hall hall = hallRepository.findByName(hallUpdateRequestDTO.getName()).orElseThrow(() ->
+                new IllegalArgumentException("Invalid hall Id:" + hallUpdateRequestDTO.getName()));
+
+        hall.update(hallUpdateRequestDTO);
+        return Optional.empty();
     }
 
     public void deleteHall(Long id) {
