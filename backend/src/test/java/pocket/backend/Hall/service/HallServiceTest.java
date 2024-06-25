@@ -7,9 +7,12 @@ import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.junit.jupiter.MockitoExtension;
+import pocket.backend.category.dto.CategoryDeleteRequest;
 import pocket.backend.hall.domain.Hall;
 import pocket.backend.hall.domain.HallRepository;
+import pocket.backend.hall.dto.HallDeleteRequestDTO;
 import pocket.backend.hall.dto.HallRegisterRequestDTO;
+import pocket.backend.hall.dto.HallUpdateRequestDTO;
 import pocket.backend.hall.service.HallService;
 
 import java.util.Optional;
@@ -64,6 +67,21 @@ public class HallServiceTest {
 
         assertThat(hallService.registerHall(hallRegisterRequestDTO)).isEqualTo(Optional.of(hall));
         verify(hallRepository).save(any());
+    }
+
+    @DisplayName("웨딩홀을 수정한다.")
+    @Test
+    void updateHall(){
+        //given
+        HallUpdateRequestDTO hallUpdateRequestDTO = new HallUpdateRequestDTO(
+                "test", "asdf", "asdf", "asdf", 10, "asdf  ", 10, "asdf", "asdf", "asdf", 10
+        );
+        //when
+        when(hallRepository.findByName("test")).thenReturn(Optional.of(hall));
+        //then
+        hallService.updateHall(hallUpdateRequestDTO);
+        assertThat(hall.getName()).isEqualTo("test");
+        verify(hallRepository).findByName("test");
     }
 
 }
