@@ -8,6 +8,7 @@ import pocket.backend.common.exceptions.DuplicatedException;
 import pocket.backend.common.exceptions.ErrorCode;
 import pocket.backend.hall.domain.Hall;
 import pocket.backend.hall.domain.HallRepository;
+import pocket.backend.hall.dto.HallDeleteRequestDTO;
 import pocket.backend.hall.dto.HallRegisterRequestDTO;
 import pocket.backend.hall.dto.HallUpdateRequestDTO;
 
@@ -61,9 +62,9 @@ public class HallService {
         return Optional.empty();
     }
 
-    public void deleteHall(Long id) {
-        Hall hall = hallRepository.findById(id).orElseThrow(() ->
-                new IllegalArgumentException("Invalid hall Id:" + id));
+    public void deleteHall(HallDeleteRequestDTO hallDeleteRequestDTO) {
+        Hall hall = hallRepository.findByName(hallDeleteRequestDTO.getHallName()).orElseThrow(() ->
+                new IllegalArgumentException("Invalid hall Id:" +  hallDeleteRequestDTO.getHallName()));
         hallRepository.delete(hall);
     }
 }
