@@ -7,7 +7,6 @@ import lombok.NoArgsConstructor;
 import lombok.Setter;
 import pocket.backend.hall.dto.HallUpdateRequestDTO;
 
-import javax.swing.text.html.Option;
 import java.util.Optional;
 
 @NoArgsConstructor(access=lombok.AccessLevel.PROTECTED)
